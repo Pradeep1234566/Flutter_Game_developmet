@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:brick_game/pages/ball_page.dart';
 import 'package:brick_game/pages/cover_page.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   double x = 0;
   double y = 0;
-
   bool IsGameStarted = false;
 
   void startGame() {
@@ -33,17 +33,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.deepPurple[200],
         body: Stack(children: [
           CoverPage(isGameStarted: IsGameStarted),
-          Container(
-            alignment: Alignment(x, y),
-            child: Container(
-              height: 15,
-              width: 15,
-              decoration: BoxDecoration(
-                color: Colors.deepPurple,
-                borderRadius: BorderRadius.circular(50),
-              ),
-            ),
-          )
+          BallPage(x: x, y: y),
         ]),
       ),
     );

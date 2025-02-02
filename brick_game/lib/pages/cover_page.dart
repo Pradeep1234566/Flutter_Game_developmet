@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class CoverPage extends StatelessWidget {
   final bool isGameStarted;
 
-  const CoverPage({required this.isGameStarted});
+  const CoverPage({super.key, required this.isGameStarted});
 
   @override
   Widget build(BuildContext context) {
     return isGameStarted
         ? Container()
         : Container(
-            alignment: Alignment(0, -0.2),
+            alignment: Alignment(0, -0.1),
             child: Text(
               'TAP TO START',
               style: TextStyle(
