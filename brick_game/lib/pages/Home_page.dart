@@ -15,19 +15,17 @@ class _HomePageState extends State<HomePage> {
   // Ball position coordinates
   double x = 0;
   double y = 0;
-  var ballDirection = 1;
+  double ballDirection = -1; // -1 for up, 1 for down
 
   // Game state
   bool isGameStarted = false;
 
   // Player parameters
-  double player_width = 0.3; // Width of the player paddle
-  double player_x = 0; // Player's x position
+  double player_width = 0.3;
+  double player_x = 0;
 
-  // Movement sensitivity (smaller = less sensitive)
-  final double movementSensitivity = 0.04; // Reduced sensitivity
+  final double movementSensitivity = 0.04;
 
-  // Starts the game and initiates ball movement
   void startGame() {
     setState(() {
       isGameStarted = true;
@@ -35,25 +33,30 @@ class _HomePageState extends State<HomePage> {
 
     Timer.periodic(Duration(milliseconds: 10), (timer) {
       setState(() {
-        y -= 0.01; // Ball movement speed
+        // Move ball up or down based on direction
+        y += 0.01 * ballDirection;
+
+        // Reverse direction when hitting top or bottom
+        if (y <= -1) {
+          ballDirection = 1; // Start moving down
+        }
+        if (y >= 0.9) {
+          ballDirection = -1; // Start moving up
+        }
       });
     });
   }
 
-  // Moves the player paddle to the left
   void moveLeft() {
     setState(() {
-      // Check if movement won't exceed left boundary (-1)
       if (player_x - movementSensitivity >= -1) {
         player_x -= movementSensitivity;
       }
     });
   }
 
-  // Moves the player paddle to the right
   void moveRight() {
     setState(() {
-      // Check if movement won't exceed right boundary (1 - paddle width)
       if (player_x + movementSensitivity <= 1 - player_width) {
         player_x += movementSensitivity;
       }
@@ -68,23 +71,22 @@ class _HomePageState extends State<HomePage> {
       child: GestureDetector(
         onTap: startGame,
         onHorizontalDragUpdate: (details) {
-          // Handle horizontal drag movements
           double velocity = details.primaryDelta ?? 0;
-
-          // Control the speed of the movement based on the drag velocity
           if (velocity > 0) {
             moveRight();
           } else if (velocity < 0) {
             moveLeft();
           }
         },
-        child: Scaffold(
-          backgroundColor: Colors.deepPurple[200],
-          body: Stack(children: [
-            CoverPage(isGameStarted: isGameStarted),
-            BallPage(x: x, y: y),
-            PlayerPage(player_width: player_width, x: player_x),
-          ]),
+        child: SafeArea(
+          child: Scaffold(
+            backgroundColor: Colors.deepPurple[200],
+            body: Stack(children: [
+              CoverPage(isGameStarted: isGameStarted),
+              BallPage(x: x, y: y),
+              PlayerPage(player_width: player_width, x: player_x),
+            ]),
+          ),
         ),
       ),
     );
