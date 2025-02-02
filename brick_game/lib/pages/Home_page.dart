@@ -3,6 +3,7 @@ import 'package:brick_game/pages/ball_page.dart';
 import 'package:brick_game/pages/cover_page.dart';
 import 'package:brick_game/pages/player_page.dart';
 import 'package:flutter/material.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -24,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   double playerWidth = 0.3;
   double playerX = 0;
 
-  final double movementSensitivity = 0.04;
+  final double movementSensitivity = 0.02;
 
   void startGame() {
     setState(() {
@@ -78,7 +79,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return RawKeyboardListener(
+    return KeyboardListener(
       focusNode: FocusNode(),
       autofocus: true,
       child: GestureDetector(

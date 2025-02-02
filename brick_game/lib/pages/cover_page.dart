@@ -10,7 +10,7 @@ class CoverPage extends StatelessWidget {
     return isGameStarted
         ? Container()
         : Container(
-            alignment: Alignment(0, -0.1),
+            alignment: Alignment(0, -0.2),
             child: Text(
               'TAP TO START',
               style: TextStyle(
