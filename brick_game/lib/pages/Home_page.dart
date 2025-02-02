@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.deepPurple[200],
         body: Stack(children: [
           Container(
-            alignment: Alignment(0, 0),
+            alignment: Alignment(x, y),
             child: Container(
               height: 15,
               width: 15,
