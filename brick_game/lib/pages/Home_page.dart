@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:brick_game/pages/cover_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,7 +14,10 @@ class _HomePageState extends State<HomePage> {
   double x = 0;
   double y = 0;
 
+  bool IsGameStarted = false;
+
   void startGame() {
+    IsGameStarted = true;
     Timer.periodic(Duration(milliseconds: 10), (timer) {
       setState(() {
         y -= 0.01;
@@ -28,16 +32,7 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         backgroundColor: Colors.deepPurple[200],
         body: Stack(children: [
-          Container(
-            alignment: Alignment(0, -0.2),
-            child: Text(
-              'TAP TO START',
-              style: TextStyle(
-                color: Colors.deepPurple,
-                fontSize: 20,
-              ),
-            ),
-          ),
+          CoverPage(isGameStarted: IsGameStarted),
           Container(
             alignment: Alignment(x, y),
             child: Container(
