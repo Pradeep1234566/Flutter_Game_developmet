@@ -3,7 +3,6 @@ import 'package:brick_game/pages/ball_page.dart';
 import 'package:brick_game/pages/cover_page.dart';
 import 'package:brick_game/pages/player_page.dart';
 import 'package:flutter/material.dart';
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -15,14 +14,15 @@ class _HomePageState extends State<HomePage> {
   // Ball position coordinates
   double x = 0;
   double y = 0;
-  double ballDirection = -1; // -1 for up, 1 for down
+  double ballDirectionX = 1; // 1 for right, -1 for left
+  double ballDirectionY = -1; // -1 for up, 1 for down
 
   // Game state
   bool isGameStarted = false;
 
   // Player parameters
-  double player_width = 0.3;
-  double player_x = 0;
+  double playerWidth = 0.3;
+  double playerX = 0;
 
   final double movementSensitivity = 0.04;
 
@@ -33,15 +33,28 @@ class _HomePageState extends State<HomePage> {
 
     Timer.periodic(Duration(milliseconds: 10), (timer) {
       setState(() {
-        // Move ball up or down based on direction
-        y += 0.01 * ballDirection;
+        // Move ball based on direction
+        x += 0.01 * ballDirectionX;
+        y += 0.01 * ballDirectionY;
 
         // Reverse direction when hitting top or bottom
         if (y <= -1) {
-          ballDirection = 1; // Start moving down
+          ballDirectionY = 1; // Start moving down
         }
         if (y >= 0.9) {
-          ballDirection = -1; // Start moving up
+          // Check if ball is within player width
+          if (x >= playerX && x <= playerX + playerWidth) {
+            ballDirectionY = -1; // Start moving up
+          } else {
+            // Game over or reset ball position
+            timer.cancel();
+            isGameStarted = false;
+          }
+        }
+
+        // Reverse direction when hitting sides
+        if (x <= -1 || x >= 1) {
+          ballDirectionX *= -1;
         }
       });
     });
@@ -49,16 +62,16 @@ class _HomePageState extends State<HomePage> {
 
   void moveLeft() {
     setState(() {
-      if (player_x - movementSensitivity >= -1) {
-        player_x -= movementSensitivity;
+      if (playerX - movementSensitivity >= -1) {
+        playerX -= movementSensitivity;
       }
     });
   }
 
   void moveRight() {
     setState(() {
-      if (player_x + movementSensitivity <= 1 - player_width) {
-        player_x += movementSensitivity;
+      if (playerX + movementSensitivity <= 1 - playerWidth) {
+        playerX += movementSensitivity;
       }
     });
   }
@@ -84,7 +97,7 @@ class _HomePageState extends State<HomePage> {
             body: Stack(children: [
               CoverPage(isGameStarted: isGameStarted),
               BallPage(x: x, y: y),
-              PlayerPage(player_width: player_width, x: player_x),
+              PlayerPage(player_width: playerWidth, x: playerX),
             ]),
           ),
         ),
