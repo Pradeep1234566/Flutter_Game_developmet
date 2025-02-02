@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:brick_game/pages/ball_page.dart';
 import 'package:brick_game/pages/cover_page.dart';
+import 'package:brick_game/pages/player_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,6 +16,8 @@ class _HomePageState extends State<HomePage> {
   double x = 0;
   double y = 0;
   bool IsGameStarted = false;
+  double player_width = 0.3;
+  double player_x = 0;
 
   void startGame() {
     IsGameStarted = true;
@@ -34,6 +37,7 @@ class _HomePageState extends State<HomePage> {
         body: Stack(children: [
           CoverPage(isGameStarted: IsGameStarted),
           BallPage(x: x, y: y),
+          PlayerPage(player_width: player_width, x: player_x),
         ]),
       ),
     );
