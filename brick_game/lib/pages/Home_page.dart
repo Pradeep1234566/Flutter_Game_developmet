@@ -15,6 +15,7 @@ class _HomePageState extends State<HomePage> {
   // Ball position coordinates
   double x = 0;
   double y = 0;
+  var ballDirection = 1;
 
   // Game state
   bool isGameStarted = false;
