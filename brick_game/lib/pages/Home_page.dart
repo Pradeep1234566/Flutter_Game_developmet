@@ -29,6 +29,16 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.deepPurple[200],
         body: Stack(children: [
           Container(
+            alignment: Alignment(0, -0.2),
+            child: Text(
+              'TAP TO START',
+              style: TextStyle(
+                color: Colors.deepPurple,
+                fontSize: 20,
+              ),
+            ),
+          ),
+          Container(
             alignment: Alignment(x, y),
             child: Container(
               height: 15,
