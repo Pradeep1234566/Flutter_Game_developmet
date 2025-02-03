@@ -27,6 +27,21 @@ class _HomePageState extends State<HomePage> {
 
   final double movementSensitivity = 0.02;
 
+  // Bricks
+  List<Brick> bricks = [];
+
+  @override
+  void initState() {
+    super.initState();
+    createBricks();
+  }
+
+  void createBricks() {
+    bricks = List.generate(5, (i) {
+      return Brick(x: -0.9 + i * 0.45, y: -0.5);
+    });
+  }
+
   void startGame() {
     setState(() {
       isGameStarted = true;
@@ -56,6 +71,15 @@ class _HomePageState extends State<HomePage> {
         // Reverse direction when hitting sides
         if (x <= -1 || x >= 1) {
           ballDirectionX *= -1;
+        }
+
+        // Check for collision with bricks
+        for (var brick in bricks) {
+          if (brick.isHit(x, y)) {
+            ballDirectionY *= -1;
+            bricks.remove(brick);
+            break;
+          }
         }
       });
     });
@@ -99,10 +123,36 @@ class _HomePageState extends State<HomePage> {
               CoverPage(isGameStarted: isGameStarted),
               BallPage(x: x, y: y),
               PlayerPage(player_width: playerWidth, x: playerX),
+              ...bricks
+                  .map((brick) => Positioned(
+                        left: (brick.x + 1) *
+                            MediaQuery.of(context).size.width /
+                            2,
+                        top: (brick.y + 1) *
+                            MediaQuery.of(context).size.height /
+                            2,
+                        child: Container(
+                          width: 100,
+                          height: 20,
+                          color: Colors.red,
+                        ),
+                      ))
+                  .toList(),
             ]),
           ),
         ),
       ),
     );
+  }
+}
+
+class Brick {
+  double x;
+  double y;
+
+  Brick({required this.x, required this.y});
+
+  bool isHit(double ballX, double ballY) {
+    return (ballX >= x && ballX <= x + 0.2) && (ballY >= y && ballY <= y + 0.1);
   }
 }
