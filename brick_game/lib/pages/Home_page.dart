@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   bool isGameStarted = false;
 
   // Player parameters
-  double playerWidth = 0.3;
+  double playerWidth = 0.2; // Decreased player width
   double playerX = 0;
 
   final double movementSensitivity = 0.02;
@@ -37,8 +37,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void createBricks() {
-    bricks = List.generate(5, (i) {
-      return Brick(x: -0.9 + i * 0.45, y: -0.5);
+    bricks = List.generate(10, (i) {
+      // Increased number of bricks
+      return Brick(x: -0.9 + (i % 5) * 0.45, y: -0.5 + (i ~/ 5) * 0.2);
     });
   }
 
